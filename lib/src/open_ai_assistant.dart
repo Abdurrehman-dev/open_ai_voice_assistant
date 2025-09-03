@@ -49,6 +49,7 @@ class OpenAiAssistant {
     return sessionMap;
   }
 
+  ///[start] the web RTC to open AI
   Future<void> start() async {
     if (ephemeralKey == null) {
       throw ErrorDescription('You forget to call init()!');

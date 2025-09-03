@@ -1,39 +1,163 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# OpenAI Voice Assistant 🎙️🤖
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+[![pub package](https://img.shields.io/pub/v/open_ai_voice_assistant.svg)](https://pub.dev/packages/open_ai_voice_assistant)
+[![likes](https://img.shields.io/pub/likes/open_ai_voice_assistant?logo=dart)](https://pub.dev/packages/open_ai_voice_assistant/score)
+[![pub points](https://img.shields.io/pub/points/open_ai_voice_assistant?logo=dart)](https://pub.dev/packages/open_ai_voice_assistant/score)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+A Flutter package that brings **real-time voice conversation with OpenAI models** using **WebRTC**.
+It handles microphone input, audio output, and data channel messaging to create a seamless AI voice assistant experience.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+---
 
-## Features
+## ✨ Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+* 🎤 Real-time voice input and AI response
+* 🔊 Configurable voice & speed
+* ⚡ Ephemeral key authentication with OpenAI Realtime API
+* 📱 Android & iOS support with proper audio session handling
+* 🔌 Simple singleton API (`OpenAiAssistant.instance`)
 
-## Getting started
+---
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## 📦 Installation
 
-## Usage
+Add to your `pubspec.yaml`:
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  open_ai_voice_assistant: ^0.0.1
 ```
 
-## Additional information
+Run:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```bash
+flutter pub get
+```
+
+---
+
+## 🚀 Usage
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:open_ai_voice_assistant/open_ai_voice_assistant.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await OpenAiAssistant.instance.init(
+        apiKey: 'YOUR_API_KEY', // 🔑 Replace with your OpenAI API Key
+      );
+      await OpenAiAssistant.instance.start();
+      setState(() {
+        isInitialized = true;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    OpenAiAssistant.instance.disposeAll();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'OpenAI Voice Assistant',
+      home: Scaffold(
+        body: Center(
+          child: isInitialized
+              ? Container(
+                  height: 100,
+                  width: 100,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                )
+              : const CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+}
+```
+
+---
+
+## ⚙️ Setup
+
+### Android
+
+Add permissions in `AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+```
+
+### iOS
+
+In `ios/Podfile` set platform:
+
+```ruby
+platform :ios, '14.0'
+
+# ADD THIS SECTION
+target.build_configurations.each do |config|
+  config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+    '$(inherited)',
+    'AUDIO_SESSION_MICROPHONE=1'
+  ]
+  config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+end
+```
+
+Add permissions in `ios/Runner/Info.plist`:
+
+```xml
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string>Required to connect to Bluetooth audio devices.</string>
+<key>NSCameraUsageDescription</key>
+<string>Camera needed for realtime communication.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Need microphone access for conversation with AI</string>
+<key>NSSpeechRecognitionUsageDescription</key>
+<string>Speech recognition will be used to transcribe your voice commands for AI assistant.</string>
+```
+
+---
+
+## 📌 Example
+
+Check the [`example/`](example/) folder for a full Flutter demo app.
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+👉 Would you like me to also add **badges for supported platforms** (Android, iOS, Web) at the top of the README so it looks more professional on pub.dev?
