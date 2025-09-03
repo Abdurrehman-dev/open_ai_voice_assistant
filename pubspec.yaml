@@ -1,7 +1,9 @@
 name: open_ai_voice_assistant
 description: "A new Flutter package that helps you to create voice assistant."
 version: 0.0.1
-homepage:
+homepage: https://github.com/Abdurrehman-dev/open_ai_voice_assistant
+repository: https://github.com/Abdurrehman-dev/open_ai_voice_assistant
+issue_tracker: https://github.com/Abdurrehman-dev/open_ai_voice_assistant/issues
 
 environment:
   sdk: ^3.8.1
