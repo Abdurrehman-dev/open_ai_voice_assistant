@@ -159,5 +159,3 @@ Check the [`example/`](example/) folder for a full Flutter demo app.
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
-
-👉 Would you like me to also add **badges for supported platforms** (Android, iOS, Web) at the top of the README so it looks more professional on pub.dev?

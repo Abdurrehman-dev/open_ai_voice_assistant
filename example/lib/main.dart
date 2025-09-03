@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await OpenAiAssistant.instance.init(
-        apiKey:'Your Api Key',
+        apiKey:'Your Api Key', // 🔑 Replace with your OpenAI API Key
       );
       await OpenAiAssistant.instance.start();
       setState(() {
